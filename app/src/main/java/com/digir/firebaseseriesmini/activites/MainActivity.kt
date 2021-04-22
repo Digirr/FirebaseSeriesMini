@@ -1,7 +1,8 @@
-package com.digir.firebaseseriesmini
+package com.digir.firebaseseriesmini.activites
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.digir.firebaseseriesmini.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
