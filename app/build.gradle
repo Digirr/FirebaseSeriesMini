@@ -37,7 +37,7 @@ android {
 dependencies {
 
     //Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
 
     //Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "725304171980",
+    "project_id": "seriesmini-475f9",
+    "storage_bucket": "seriesmini-475f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725304171980:android:ab94af9c7fce6950925169",
+        "android_client_info": {
+          "package_name": "com.digir.firebaseseriesmini"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725304171980-c9npga5hnbkdg548pkgs9d459svu2his.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWDEg8LmqORpKtTL07ea6VIKDgAO2fdGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725304171980-c9npga5hnbkdg548pkgs9d459svu2his.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
