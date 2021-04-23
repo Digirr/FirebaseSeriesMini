@@ -7,6 +7,7 @@ import com.digir.firebaseseriesmini.data.Car
 import com.digir.firebaseseriesmini.data.User
 import com.google.firebase.FirebaseApiNotAvailableException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
@@ -49,6 +50,18 @@ class FirebaseRepository {
                     Log.d(REPO_DEBUG, it.message.toString())
                 }
         return cloudResult  //No i zwracanie LiveData
+    }
+
+    fun addFavCar(car : Car) {
+        cloud.collection("users")
+                .document(auth.currentUser?.uid!!)
+                .update("favCars", FieldValue.arrayUnion(car.id))
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, "Dodana do ulubionych")
+                }
+                .addOnFailureListener { exc ->
+                    Log.d(REPO_DEBUG, exc.message.toString())
+                }
     }
 
 

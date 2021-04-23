@@ -59,8 +59,7 @@ class HomeFragment : Fragment(), OnCarItemLongClick {
     }
 
     override fun onCarLongClick(car: Car, position: Int) {
-        Toast.makeText(requireContext(), car.name, Toast.LENGTH_LONG)
-                .show()
+        homeVm.addFavCar(car)
     }
 
 }
