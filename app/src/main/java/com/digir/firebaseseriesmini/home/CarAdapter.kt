@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.digir.firebaseseriesmini.R
 import com.digir.firebaseseriesmini.data.Car
 
@@ -30,8 +31,6 @@ class CarAdapter(private val listener: OnCarItemLongClick) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
-
-
         bindData(holder)
     }
 
@@ -42,7 +41,10 @@ class CarAdapter(private val listener: OnCarItemLongClick) : RecyclerView.Adapte
 
         name.text = carsList[holder.adapterPosition].name
         productionYear.text = carsList[holder.adapterPosition].productionYear
-        //car image - pozniej
+        //Biblioteka do szybkiego ladowania zdjec
+        Glide.with(holder.itemView)
+                .load(carsList[holder.adapterPosition].image)
+                .into(image)
     }
 
     override fun getItemCount(): Int {

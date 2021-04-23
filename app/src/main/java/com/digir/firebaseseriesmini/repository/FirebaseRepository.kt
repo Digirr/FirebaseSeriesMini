@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class FirebaseRepository {
     private val REPO_DEBUG = "REPO_DEBUG"
@@ -17,6 +18,45 @@ class FirebaseRepository {
     private val storage = FirebaseStorage.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val cloud = FirebaseFirestore.getInstance()
+
+    fun uploadUserPhoto(bytes: ByteArray) {
+        storage.getReference("users")   //Folder users
+                //Wewnatrz tego folderu ma znalezc dziecko, czyli konkretny dokument
+                .child("${auth.currentUser!!.uid}.jpg") //Jesli nie istnieje o takiej nazwie, to go tworzy
+                .putBytes(bytes)    //Umieszcza plik w formie tablicy bajtow
+                .addOnCompleteListener {
+                    Log.d(REPO_DEBUG, "COMPLETE UPLOAD PHOTO")
+                }
+                .addOnSuccessListener {
+                    getPhotoDownloadUrl(it.storage)
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+    }
+
+    private fun getPhotoDownloadUrl(storage: StorageReference) {
+        storage.downloadUrl
+                .addOnSuccessListener {
+                    updateUserPhoto(it.toString())
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+    }
+
+    private fun updateUserPhoto(url: String) {
+        cloud.collection("users")
+                .document(auth.currentUser!!.uid)
+                .update("image", url)
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, "UPDATE USER PHOTO!")
+                }
+                .addOnFailureListener{
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+    }
+
 
     fun getUserData(): LiveData<User> {
         val cloudResult = MutableLiveData<User>()

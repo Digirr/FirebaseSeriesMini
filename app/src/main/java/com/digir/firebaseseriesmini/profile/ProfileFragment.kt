@@ -1,7 +1,11 @@
 package com.digir.firebaseseriesmini.profile
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,15 +13,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.digir.firebaseseriesmini.R
 import com.digir.firebaseseriesmini.data.Car
 import com.digir.firebaseseriesmini.data.User
 import com.digir.firebaseseriesmini.home.CarAdapter
 import com.digir.firebaseseriesmini.home.OnCarItemLongClick
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.ByteArrayOutputStream
+import java.lang.Exception
 
 class ProfileFragment : Fragment() , OnCarItemLongClick{
     private val PROFILE_DEBUG = "PROFILE_DEBUG"
+    private val REQUEST_IMAGE_CAPTURE = 1
 
     //Delegacja
     private val profileVm by viewModels<ProfileViewModel>()
@@ -31,6 +39,7 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSubmitDataClick()
+        setupTakePictureClick()
         recyclerFavCars.layoutManager = LinearLayoutManager(requireContext())
         recyclerFavCars.adapter = adapter
     }
@@ -52,11 +61,48 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
         adapter.removeCar(car, position)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+
+            Log.d(PROFILE_DEBUG, "BITMAP: " + imageBitmap.byteCount.toString())
+
+            Glide.with(this)
+                    .load(imageBitmap)
+                    .circleCrop()
+                    .into(userImage)
+
+            val stream = ByteArrayOutputStream()
+            val result = imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)  //Kodowanie w tablicy byteow stream
+            val byteArray = stream.toByteArray()    //Zamiana na format bytestream
+
+            if(result) profileVm.uploadUserPhoto(byteArray) //Idzie do repo, a potem do firebsae
+        }
+    }
+
+    private fun setupTakePictureClick() {
+        userImage.setOnClickListener {
+            takePicture()
+        }
+    }
+    private fun takePicture() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE)
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }catch (exc: Exception){
+            Log.d(PROFILE_DEBUG, exc.message.toString())
+        }
+    }
+
     private fun bindUserData(user: User) {
         Log.d(PROFILE_DEBUG, user.toString())
         userNameET.setText(user.name)
         userSurnameET.setText(user.surname)
         userEmailET.setText(user.email)
+        Glide.with(this)
+                .load(user.image) //Format kolka
+                .circleCrop()
+                .into(userImage)
     }
     private fun setupSubmitDataClick() {
         submitDataProfile.setOnClickListener {
