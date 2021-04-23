@@ -3,6 +3,7 @@ package com.digir.firebaseseriesmini.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.digir.firebaseseriesmini.data.Car
 import com.digir.firebaseseriesmini.data.User
 import com.google.firebase.FirebaseApiNotAvailableException
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +34,20 @@ class FirebaseRepository {
             .addOnFailureListener {
                 Log.d(REPO_DEBUG, it.message.toString())
             }
+        return cloudResult  //No i zwracanie LiveData
+    }
+    fun getCars(): LiveData<List<Car>> {
+        val cloudResult = MutableLiveData<List<Car>>()
+
+        cloud.collection("cars")
+                .get()
+                .addOnSuccessListener {
+                    val user = it.toObjects(Car::class.java)
+                    cloudResult.postValue(user)
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
         return cloudResult  //No i zwracanie LiveData
     }
 

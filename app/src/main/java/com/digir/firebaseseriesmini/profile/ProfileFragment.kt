@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.digir.firebaseseriesmini.R
 import com.digir.firebaseseriesmini.data.User
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
     private val PROFILE_DEBUG = "PROFILE_DEBUG"
@@ -32,6 +33,9 @@ class ProfileFragment : Fragment() {
 
     private fun bindUserData(user: User) {
         Log.d(PROFILE_DEBUG, user.toString())
+        userNameET.setText(user.name)
+        userSurnameET.setText(user.surname)
+        userEmailET.setText(user.email)
     }
 
 }
