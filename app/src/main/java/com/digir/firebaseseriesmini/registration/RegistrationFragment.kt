@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.digir.firebaseseriesmini.BaseFragment
 import com.digir.firebaseseriesmini.R
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +17,7 @@ class RegistrationFragment : BaseFragment() {
 
     private val fbAuth = FirebaseAuth.getInstance()
     private val REG_DEBUG = "REG_DEBUG"
+    private val regVm by viewModels<RegistrationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,15 @@ class RegistrationFragment : BaseFragment() {
                 fbAuth.createUserWithEmailAndPassword(email, pass)
                     .addOnSuccessListener {authRes ->
                         if(authRes.user != null){
+                            val user = com.digir.firebaseseriesmini.data.User(
+                                    authRes.user!!.uid,
+                                    "",
+                                    "",
+                                    authRes.user!!.email,
+                                    listOf(),
+                                    "")
+
+                            regVm.createNewUser(user)
                             startApp()
                         }
                     }

@@ -51,7 +51,6 @@ class FirebaseRepository {
                 }
         return cloudResult  //No i zwracanie LiveData
     }
-
     fun getFavCars(list: List<String>?) : LiveData<List<Car>> {
         val cloudResult = MutableLiveData<List<Car>>()
 
@@ -69,7 +68,6 @@ class FirebaseRepository {
         }
         return cloudResult
     }
-
     fun addFavCar(car : Car) {
         cloud.collection("users")
                 .document(auth.currentUser?.uid!!)
@@ -92,6 +90,10 @@ class FirebaseRepository {
                     Log.d(REPO_DEBUG, exc.message.toString())
                 }
     }
-
+    fun createNewUser(user: User) {
+        cloud.collection("users")
+                .document(user.uid!!)
+                .set(user)
+    }
 
 }
