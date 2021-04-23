@@ -95,5 +95,18 @@ class FirebaseRepository {
                 .document(user.uid!!)
                 .set(user)
     }
+    fun editProfileData(map: Map<String, String>) {
+        //Jako mapa
+        //Pierwszy string no nazwa pola, druga to jego wartosc
+        cloud.collection("users")
+                .document(auth.currentUser!!.uid)
+                .update(map)
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, "Zaaktualizowano dane!")
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+    }
 
 }

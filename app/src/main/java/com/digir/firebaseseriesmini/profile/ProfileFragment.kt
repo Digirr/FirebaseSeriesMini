@@ -30,6 +30,7 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupSubmitDataClick()
         recyclerFavCars.layoutManager = LinearLayoutManager(requireContext())
         recyclerFavCars.adapter = adapter
     }
@@ -46,6 +47,10 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
             }
         })
     }
+    override fun onCarLongClick(car: Car, position: Int) {
+        profileVm.removeFavCar(car)
+        adapter.removeCar(car, position)
+    }
 
     private fun bindUserData(user: User) {
         Log.d(PROFILE_DEBUG, user.toString())
@@ -53,10 +58,15 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
         userSurnameET.setText(user.surname)
         userEmailET.setText(user.email)
     }
+    private fun setupSubmitDataClick() {
+        submitDataProfile.setOnClickListener {
+            val name = userNameET.text.trim().toString()
+            val surname = userSurnameET.text.trim().toString()
 
-    override fun onCarLongClick(car: Car, position: Int) {
-        profileVm.removeFavCar(car)
-        adapter.removeCar(car, position)
+            val map = mapOf("name" to name, "surname" to surname)
+            profileVm.editProfileData(map)
+        }
     }
+
 
 }
