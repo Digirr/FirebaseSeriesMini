@@ -18,6 +18,10 @@ class CarAdapter(private val listener: OnCarItemLongClick) : RecyclerView.Adapte
         carsList.addAll(list)
         notifyDataSetChanged()
     }
+    fun removeCar(car: Car, position: Int) {   //Refresh recyclerview after remove car in profile
+        carsList.remove(car)
+        notifyItemRemoved(position)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
         val inflater = LayoutInflater.from(parent.context)

@@ -55,7 +55,8 @@ class ProfileFragment : Fragment() , OnCarItemLongClick{
     }
 
     override fun onCarLongClick(car: Car, position: Int) {
-        TODO("Not yet implemented")
+        profileVm.removeFavCar(car)
+        adapter.removeCar(car, position)
     }
 
 }

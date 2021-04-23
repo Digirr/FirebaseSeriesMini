@@ -81,6 +81,17 @@ class FirebaseRepository {
                     Log.d(REPO_DEBUG, exc.message.toString())
                 }
     }
+    fun removeFavCar(car : Car) {
+        cloud.collection("users")
+                .document(auth.currentUser?.uid!!)
+                .update("favCars", FieldValue.arrayRemove(car.id))
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, "Dodana do ulubionych")
+                }
+                .addOnFailureListener { exc ->
+                    Log.d(REPO_DEBUG, exc.message.toString())
+                }
+    }
 
 
 }
