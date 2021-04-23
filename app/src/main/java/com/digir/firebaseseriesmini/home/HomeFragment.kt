@@ -8,12 +8,13 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.digir.firebaseseriesmini.BaseFragment
 import com.digir.firebaseseriesmini.R
 import com.digir.firebaseseriesmini.data.Car
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : Fragment(), OnCarItemLongClick {
+class HomeFragment : BaseFragment(), OnCarItemLongClick {
 
     private val auth = FirebaseAuth.getInstance()
     private val homeVm by viewModels<HomeViewModel>()

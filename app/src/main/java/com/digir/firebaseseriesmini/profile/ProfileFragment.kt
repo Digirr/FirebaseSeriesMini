@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.digir.firebaseseriesmini.BaseFragment
 import com.digir.firebaseseriesmini.R
 import com.digir.firebaseseriesmini.data.Car
 import com.digir.firebaseseriesmini.data.User
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
-class ProfileFragment : Fragment() , OnCarItemLongClick{
+class ProfileFragment : BaseFragment() , OnCarItemLongClick{
     private val PROFILE_DEBUG = "PROFILE_DEBUG"
     private val REQUEST_IMAGE_CAPTURE = 1
 
