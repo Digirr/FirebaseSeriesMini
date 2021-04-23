@@ -52,6 +52,24 @@ class FirebaseRepository {
         return cloudResult  //No i zwracanie LiveData
     }
 
+    fun getFavCars(list: List<String>?) : LiveData<List<Car>> {
+        val cloudResult = MutableLiveData<List<Car>>()
+
+        if(!list.isNullOrEmpty()){
+            cloud.collection("cars")
+                .whereIn("id", list)    //Filtrowanie, sprawdzamy ktore id sie pokrywaja
+                .get()
+                .addOnSuccessListener {
+                    val resultList = it.toObjects(Car::class.java)
+                    cloudResult.postValue(resultList)
+                }
+                .addOnFailureListener { exc ->
+                    Log.d(REPO_DEBUG, exc.message.toString())
+                }
+        }
+        return cloudResult
+    }
+
     fun addFavCar(car : Car) {
         cloud.collection("users")
                 .document(auth.currentUser?.uid!!)
